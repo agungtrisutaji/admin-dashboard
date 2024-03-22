@@ -14,6 +14,14 @@ class StockResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'suplier_id' => $this->suplier_id,
+            'name' => $this->name,
+            'type' => $this->type,
+            'price' => $this->price,
+            'quantity' => $this->qty,
+            'stored_at' => $this->created_at->diffForHumans(),
+
+        ];
     }
 }

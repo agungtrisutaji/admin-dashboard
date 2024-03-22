@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Stock\StockResource;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -29,7 +30,7 @@ class StockController extends Controller
         if (is_null($data)) {
             return response()->json(['message' => 'Resource not found'], 404);
         }
-        return response()->json($data, 200);
+        return StockResource::make($data);
     }
 
     public function apiStore(Request $request)
