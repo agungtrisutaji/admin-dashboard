@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Stock\StockCollection;
 use App\Http\Resources\Stock\StockResource;
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class StockController extends Controller
@@ -20,8 +22,13 @@ class StockController extends Controller
 
     public function apiGet()
     {
-        $data = Stock::all();
-        return response()->json($data, 200);
+        DB::listen(function ($query) {
+            var_dump($query->sql);
+        });
+
+        $data = Stock::with(['suplier'])->paginate(10);
+        return new StockCollection($data);
+        // return response()->json($data, 200);
     }
 
     public function apiShow($id)
@@ -30,7 +37,7 @@ class StockController extends Controller
         if (is_null($data)) {
             return response()->json(['message' => 'Resource not found'], 404);
         }
-        return StockResource::make($data);
+        return new StockResource($data);
     }
 
     public function apiStore(Request $request)

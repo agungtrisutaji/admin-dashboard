@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Stock;
 
+use App\Http\Resources\Suplier\SuplierResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,6 +22,7 @@ class StockResource extends JsonResource
             'price' => $this->price,
             'quantity' => $this->qty,
             'stored_at' => $this->created_at->diffForHumans(),
+            'suplier' => new SuplierResource($this->suplier)
 
         ];
     }
